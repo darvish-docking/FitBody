@@ -7,6 +7,11 @@ import 'package:fitbody/features/auth/presentation/providers/user_provider.dart'
 import 'package:fitbody/providers/theme_provider.dart';
 import 'package:fitbody/features/auth/presentation/screens/splash_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/onboarding_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/login_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/signup_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/forgot_password_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/set_password_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/set_fingerprint_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +47,11 @@ class FitBodyApp extends StatelessWidget {
           routes: {
             '/splash': (context) => const SplashScreen(),
             '/onboarding': (context) => const OnboardingScreen(),
+            '/login': (context) => const LoginScreen(),
+            '/signup': (context) => const SignupScreen(),
+            '/forgot-password': (context) => const ForgotPasswordScreen(),
+            '/set-password': (context) => const SetPasswordScreen(),
+            '/set-fingerprint': (context) => const SetFingerprintScreen(),
           },
         );
       },

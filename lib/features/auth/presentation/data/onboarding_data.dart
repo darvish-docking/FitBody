@@ -24,13 +24,13 @@ class OnboardingPageData {
     ),
     OnboardingPageData(
       backgroundImage: 'assets/images/onboarding_3.png',
-      imagePath: 'assets/images/onboarding_center_3.png',
-      title: 'Track Your Progress',
+      imagePath: 'assets/images/apple.png',
+      title: 'Find Nutrition Tips That Fit Your Lifestyle',
     ),
     OnboardingPageData(
       backgroundImage: 'assets/images/onboarding_4.png',
-      imagePath: 'assets/images/onboarding_center_4.png',
-      title: 'Join the Community',
+      imagePath: 'assets/images/Community.png',
+      title: 'A Community For You, Challenge Yourself',
     ),
   ];
 }

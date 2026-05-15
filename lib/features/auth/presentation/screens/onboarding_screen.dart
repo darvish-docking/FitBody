@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.of(context).pushReplacementNamed('/auth');
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 
@@ -58,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             right: 10,
             child: _currentPage > 0 && _currentPage < pages.length - 1
                 ? TextButton(
-                    onPressed: () => Navigator.of(context).pushReplacementNamed('/auth'),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed('/login'),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -130,7 +130,7 @@ class _OnboardingPage extends StatelessWidget {
                   _buildBanner(context, colors, size, currentIndex),
                   if (!data.isWelcome) ...[
                     SizedBox(height: size.height * 0.03),
-                    _buildButton(context),
+                    _buildButton(context, colors),
                   ],
                 ],
               ),
@@ -181,7 +181,7 @@ class _OnboardingPage extends StatelessWidget {
   Widget _buildInfoBanner(BuildContext context, Size size, AppColorScheme colors, int currentIndex) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: size.width * 0.05,
+        horizontal: size.width * 0.06,
         vertical: size.height * 0.02,
       ),
       decoration: BoxDecoration(
@@ -213,7 +213,7 @@ class _OnboardingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context) {
+  Widget _buildButton(BuildContext context, AppColorScheme colors) {
     final size = MediaQuery.sizeOf(context);
     return SizedBox(
       width: size.width * 0.53,
@@ -221,14 +221,14 @@ class _OnboardingPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onNext,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white.withValues(alpha: 0.25),
-          foregroundColor: Colors.white,
+          backgroundColor: colors.onPrimary.withValues(alpha: 0.25),
+          foregroundColor: colors.onPrimary,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
-            side: const BorderSide(color: Colors.white, width: 1),
+            side: BorderSide(color: colors.onPrimary, width: 1),
           ),
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.bold,
             fontSize: 16,
