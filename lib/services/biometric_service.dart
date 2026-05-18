@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +26,12 @@ class BiometricService {
     String? localizedReason,
   }) async {
     try {
+      final canCheck = await _localAuth.canCheckBiometrics;
+      final isSupported = await _localAuth.isDeviceSupported();
+      final availableBiometrics = await _localAuth.getAvailableBiometrics();
+      debugPrint('[BiometricService] canCheckBiometrics: $canCheck');
+      debugPrint('[BiometricService] isDeviceSupported: $isSupported');
+      debugPrint('[BiometricService] availableBiometrics: $availableBiometrics');
       return await _localAuth.authenticate(
         localizedReason: localizedReason ?? reason,
         options: const AuthenticationOptions(
@@ -32,7 +39,8 @@ class BiometricService {
           biometricOnly: false,
         ),
       );
-    } on PlatformException {
+    } on PlatformException catch (e) {
+      debugPrint('[BiometricService] PlatformException code=${e.code} message=${e.message}');
       return false;
     }
   }
