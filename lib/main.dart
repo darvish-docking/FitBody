@@ -13,6 +13,11 @@ import 'package:fitbody/features/auth/presentation/screens/forgot_password_scree
 import 'package:fitbody/features/auth/presentation/screens/set_password_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/set_fingerprint_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/gender_selection_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/age_selection_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/weight_selection_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/height_selection_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/goal_selection_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/activity_level_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +59,11 @@ class FitBodyApp extends StatelessWidget {
             '/set-password': (context) => const SetPasswordScreen(),
             '/set-fingerprint': (context) => const SetFingerprintScreen(),
             '/gender-selection': (context) => const GenderSelectionScreen(),
+            '/age-selection': (context) => const AgeSelectionScreen(),
+            '/weight-selection': (context) => const WeightSelectionScreen(),
+            '/height-selection': (context) => const HeightSelectionScreen(),
+            '/goal-selection': (context) => const GoalSelectionScreen(),
+            '/activity-level': (context) => const ActivityLevelScreen(),
           },
         );
       },

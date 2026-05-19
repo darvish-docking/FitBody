@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fitbody/core/constants/colors.dart';
 
-class GenderSelectionScreen extends StatefulWidget {
-  const GenderSelectionScreen({super.key});
+class ActivityLevelScreen extends StatefulWidget {
+  const ActivityLevelScreen({super.key});
 
   @override
-  State<GenderSelectionScreen> createState() => _GenderSelectionScreenState();
+  State<ActivityLevelScreen> createState() => _ActivityLevelScreenState();
 }
 
-class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
-  String? _selectedGender = 'Male';
+class _ActivityLevelScreenState extends State<ActivityLevelScreen> {
+  final List<String> _levels = [
+    'Beginner',
+    'Intermediate',
+    'Advance',
+  ];
+  String _selectedLevel = 'Beginner';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,6 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
     final colors = isDark ? AppColors.dark : AppColors.light;
     final size = MediaQuery.sizeOf(context);
 
-    // Explicitly black background as requested
     final backgroundColor = colors.surface; 
     final textColor = Colors.white;
 
@@ -30,7 +34,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
             SizedBox(height: size.height * 0.04),
             // Back Button
             Padding(
-              padding: const EdgeInsets.only(left:8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
                 child: Row(
@@ -54,12 +58,12 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.01),
+            SizedBox(height: size.height * 0.04),
             
             // Title text
             Center(
               child: Text(
-                "What's your Gender",
+                "Physical Activity Level",
                 style: TextStyle(
                   fontSize: size.width * 0.07,
                   fontFamily: 'Poppins',
@@ -68,46 +72,39 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: size.height * 0.04),
             
-            // Banner with dummy text
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.06,
-                vertical: size.height * 0.02,
-              ),
-              color: colors.primary,
+            // Dummy text
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
               child: Text(
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: size.width * 0.04,
-                  color: colors.cardBackground,
+                  color: Colors.grey[400],
                   fontFamily: 'LeagueSpartan',
                   height: 1.1,
                 ),
               ),
             ),
             
-            // Circular containers for Gender
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildGenderOption('Male', 'assets/images/Male.png', size, colors),
-                    SizedBox(height: size.height * 0.04),
-                    _buildGenderOption('Female', 'assets/images/Female.png', size, colors),
-                  ],
-                ),
+            // Large amount of space
+            SizedBox(height: size.height * 0.15),
+            
+            // Activity Level Options (3 pill-shaped containers)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+              child: Column(
+                children: _levels.map((level) => _buildLevelPill(level, colors)).toList(),
               ),
             ),
             
-            // Next button
+            const Spacer(),
+            
+            // Continue button
             Center(
-              child: _buildNextButton(size, colors),
+              child: _buildContinueButton(size, colors),
             ),
             SizedBox(height: size.height * 0.04),
           ],
@@ -116,47 +113,39 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
     );
   }
 
-  Widget _buildGenderOption(String gender, String iconPath, Size size, AppColorScheme colors) {
-    final isSelected = _selectedGender == gender;
+  Widget _buildLevelPill(String level, AppColorScheme colors) {
+    final isSelected = _selectedLevel == level;
+    
     return GestureDetector(
-      onTap: () => setState(() => _selectedGender = gender),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: size.width * 0.35,
-            height: size.width * 0.35,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isSelected ? colors.secondary : colors.surface,
-              border: Border.all(
-                color: isSelected ? colors.secondary : colors.textPrimary,
-                width: 2,
-              ),
-            ),
-            child: Image.asset(
-              iconPath,
-              width: size.width * 0.15,
-              height: size.width * 0.15,
-              color: isSelected ? colors.cardBackground : colors.textPrimary,
-            ),
-          ),
-          SizedBox(height: size.height * 0.02),
-          Text(
-            gender,
+      onTap: () {
+        setState(() {
+          _selectedLevel = level;
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isSelected ? colors.secondary : Colors.white,
+          borderRadius: BorderRadius.circular(35), // Pill shaped
+        ),
+        child: Center(
+          child: Text(
+            level,
             style: TextStyle(
-              color: colors.textPrimary,
-              fontSize: size.width * 0.05,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: isSelected ? Colors.black : colors.primary,
               fontFamily: 'Poppins',
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildNextButton(Size size, AppColorScheme colors) {
+  Widget _buildContinueButton(Size size, AppColorScheme colors) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -173,9 +162,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
         height: size.height * 0.058,
         child: ElevatedButton(
           onPressed: () {
-            if (_selectedGender != null) {
-              Navigator.of(context).pushNamed('/age-selection');
-            }
+            // End of onboarding flow
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: colors.textPrimary.withValues(alpha: 0.1),
@@ -192,7 +179,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
             ),
           ),
           child: Text(
-            'Next',
+            'Continue',
             style: TextStyle(color: colors.textPrimary),
           ),
         ),
