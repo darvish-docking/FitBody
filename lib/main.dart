@@ -18,6 +18,8 @@ import 'package:fitbody/features/auth/presentation/screens/weight_selection_scre
 import 'package:fitbody/features/auth/presentation/screens/height_selection_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/goal_selection_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/activity_level_screen.dart';
+import 'package:fitbody/features/auth/presentation/screens/fill_profile_screen.dart';
+import 'package:fitbody/features/home/presentation/screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +66,8 @@ class FitBodyApp extends StatelessWidget {
             '/height-selection': (context) => const HeightSelectionScreen(),
             '/goal-selection': (context) => const GoalSelectionScreen(),
             '/activity-level': (context) => const ActivityLevelScreen(),
+            '/fill-profile': (context) => const FillProfileScreen(),
+            '/home': (context) => const HomeScreen(),
           },
         );
       },

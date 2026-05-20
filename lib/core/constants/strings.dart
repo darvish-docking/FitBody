@@ -44,6 +44,7 @@ class AppStrings {
   static const extraActive = 'Extra Active';
 
   static const home = 'Home';
+  static const library = 'Library';
   static const workouts = 'Workouts';
   static const progress = 'Progress';
   static const profile = 'Profile';

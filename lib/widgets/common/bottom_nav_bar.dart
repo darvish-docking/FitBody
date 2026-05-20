@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fitbody/core/constants/colors.dart';
 import 'package:fitbody/core/constants/strings.dart';
 
 enum BottomNavItem {
   home(icon: Icons.home_outlined, activeIcon: Icons.home, label: AppStrings.home),
-  workouts(icon: Icons.fitness_center_outlined, activeIcon: Icons.fitness_center, label: AppStrings.workouts),
-  progress(icon: Icons.bar_chart_outlined, activeIcon: Icons.bar_chart, label: AppStrings.progress),
-  profile(icon: Icons.person_outline, activeIcon: Icons.person, label: AppStrings.profile);
+  library(icon: Icons.video_library_outlined, activeIcon: Icons.video_library, label: AppStrings.library),
+  favourites(icon: Icons.star_outline, activeIcon: Icons.star, label: AppStrings.favourites),
+  support(icon: Icons.support_outlined, activeIcon: Icons.support, label: AppStrings.support);
 
   final IconData icon;
   final IconData activeIcon;
@@ -30,10 +31,20 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colors = isDark ? AppColors.dark : AppColors.light;
     final items = BottomNavItem.values;
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
+      backgroundColor: colors.primary,
+      selectedItemColor: colors.surface,
+      unselectedItemColor: colors.onPrimary,
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+      selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+      unselectedLabelStyle: const TextStyle(fontSize: 12),
       items: items.map((item) {
         return BottomNavigationBarItem(
           icon: Icon(item.icon),

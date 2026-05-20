@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:fitbody/core/constants/colors.dart';
 import 'package:fitbody/features/auth/presentation/providers/auth_provider.dart';
+import 'package:fitbody/services/storage_service.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -57,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  void _onSignUp() {
+  Future<void> _onSignUp() async {
     setState(() => _submitted = true);
     final nameError = AuthProvider.validateName(_nameController.text);
     final emailError = AuthProvider.validateEmail(_emailController.text);
@@ -72,8 +73,19 @@ class _SignupScreenState extends State<SignupScreen> {
       _confirmError = confirmError;
     });
     if (nameError == null && emailError == null && phoneError == null && passwordError == null && confirmError == null) {
-      // proceed with signup
+      await _saveSignupData();
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
     }
+  }
+
+  Future<void> _saveSignupData() async {
+    final storage = await StorageService.getInstance();
+    await storage.setString('signup_name', _nameController.text.trim());
+    await storage.setString('signup_email', _emailController.text.trim());
+    await storage.setString('signup_phone', _phoneController.text.trim());
+    await storage.setString('signup_password', _passwordController.text);
   }
 
   bool get _isFormValid {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fitbody/core/constants/colors.dart';
 import 'package:fitbody/widgets/common/custom_button.dart';
 import 'package:fitbody/features/auth/presentation/providers/auth_provider.dart';
+import 'package:fitbody/services/storage_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _passwordError = AuthProvider.validatePassword(value));
   }
 
-  void _onLogin() {
+  Future<void> _onLogin() async {
     setState(() => _submitted = true);
     final emailError = AuthProvider.validateEmail(_emailController.text);
     final passwordError = AuthProvider.validatePassword(_passwordController.text);
@@ -44,7 +45,19 @@ class _LoginScreenState extends State<LoginScreen> {
       _passwordError = passwordError;
     });
     if (emailError == null && passwordError == null) {
-      // proceed with login
+      final storage = await StorageService.getInstance();
+      final storedEmail = storage.getString('signup_email');
+      final storedPassword = storage.getString('signup_password');
+      if (_emailController.text.trim() == storedEmail &&
+          _passwordController.text == storedPassword) {
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('/set-fingerprint');
+        }
+      } else if (mounted) {
+        setState(() {
+          _passwordError = 'Invalid email or password';
+        });
+      }
     }
   }
 

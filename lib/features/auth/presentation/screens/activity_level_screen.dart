@@ -162,7 +162,7 @@ class _ActivityLevelScreenState extends State<ActivityLevelScreen> {
         height: size.height * 0.058,
         child: ElevatedButton(
           onPressed: () {
-            // End of onboarding flow
+            Navigator.of(context).pushNamed('/fill-profile');
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: colors.textPrimary.withValues(alpha: 0.1),
