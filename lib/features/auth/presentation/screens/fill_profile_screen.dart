@@ -189,21 +189,13 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
           height: size.width * 0.28,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: colors.cardBackground,
-            image: _profileImage != null
-                ? DecorationImage(
-                    image: FileImage(_profileImage!),
-                    fit: BoxFit.cover,
-                  )
-                : null,
+            image: DecorationImage(
+              image: _profileImage != null
+                  ? FileImage(_profileImage!)
+                  : const AssetImage('assets/images/women.png') as ImageProvider,
+              fit: BoxFit.cover,
+            ),
           ),
-          child: _profileImage == null
-              ? Icon(
-                  Icons.person,
-                  size: size.width * 0.12,
-                  color: colors.textSecondary,
-                )
-              : null,
         ),
         Positioned(
           bottom: 0,

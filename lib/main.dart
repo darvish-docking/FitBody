@@ -20,6 +20,9 @@ import 'package:fitbody/features/auth/presentation/screens/goal_selection_screen
 import 'package:fitbody/features/auth/presentation/screens/activity_level_screen.dart';
 import 'package:fitbody/features/auth/presentation/screens/fill_profile_screen.dart';
 import 'package:fitbody/features/home/presentation/screens/home_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/profile_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/update_profile_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/favourites_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +71,9 @@ class FitBodyApp extends StatelessWidget {
             '/activity-level': (context) => const ActivityLevelScreen(),
             '/fill-profile': (context) => const FillProfileScreen(),
             '/home': (context) => const HomeScreen(),
+            '/profile': (context) => const ProfileScreen(),
+            '/update-profile': (context) => const UpdateProfileScreen(),
+            '/favourites': (context) => const FavouritesScreen(),
           },
         );
       },

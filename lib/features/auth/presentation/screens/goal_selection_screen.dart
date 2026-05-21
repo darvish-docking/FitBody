@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitbody/core/constants/colors.dart';
+import 'package:fitbody/services/storage_service.dart';
 
 class GoalSelectionScreen extends StatefulWidget {
   const GoalSelectionScreen({super.key});
@@ -194,8 +195,10 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
         width: size.width * 0.53,
         height: size.height * 0.058,
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/activity-level');
+          onPressed: () async {
+            final storage = await StorageService.getInstance();
+            await storage.setString('user_goal', _selectedGoal);
+            if (mounted) Navigator.of(context).pushNamed('/activity-level');
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: colors.textPrimary.withValues(alpha: 0.1),

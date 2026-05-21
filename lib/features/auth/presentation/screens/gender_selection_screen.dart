@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitbody/core/constants/colors.dart';
+import 'package:fitbody/services/storage_service.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
   const GenderSelectionScreen({super.key});
@@ -172,9 +173,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
         width: size.width * 0.53,
         height: size.height * 0.058,
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_selectedGender != null) {
-              Navigator.of(context).pushNamed('/age-selection');
+              final storage = await StorageService.getInstance();
+              await storage.setString('user_gender', _selectedGender!);
+              if (mounted) Navigator.of(context).pushNamed('/age-selection');
             }
           },
           style: ElevatedButton.styleFrom(

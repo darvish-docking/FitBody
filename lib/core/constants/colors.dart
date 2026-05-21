@@ -14,6 +14,7 @@ abstract class AppColorScheme {
   Color get button;
   Color get background;
   Color get surface;
+  Color get statusCard;
   Color get error;
   Color get onPrimary;
   Color get onSecondary;
@@ -51,6 +52,9 @@ class LightColors implements AppColorScheme {
   Color get tertiary => const Color(0xFF896CFE); // figma color
   @override
   Color get button => const Color(0xFF000000);   // figma color
+  
+  @override
+  Color get statusCard => const Color(0xFF896CFE);   // figma col
 @override
   Color get background => const Color(0xFFF5F5F5);
   
@@ -121,6 +125,8 @@ class DarkColors implements AppColorScheme {
   Color get surface => Color(0xFF232323); // figma color
   @override
   Color get button => const Color(0xFF000000);   // figma color
+  @override
+  Color get statusCard => const Color(0xFF896CFE);   // figma col
   @override
   Color get error => const Color(0xFFB00020);
   @override

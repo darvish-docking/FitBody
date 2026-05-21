@@ -14,6 +14,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String _userName = '';
   int _currentNavIndex = 0;
   int _selectedCategory = 0;
+  final Set<int> _favouriteItems = {};
+  final Set<int> _favouriteArticles = {};
 
   @override
   void initState() {
@@ -47,16 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildTopBar(size, colors),
               SizedBox(height: size.height * 0.01),
               _buildDescriptiveText(size, colors),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.01),
               _buildCategorySection(size, colors),
-              SizedBox(height: size.height * 0.03),
+              SizedBox(height: size.height * 0.01),
               _buildSectionHeader('Recommendation', size, colors),
               SizedBox(height: size.height * 0.02),
               _buildRecommendationGrid(size, colors),
               SizedBox(height: size.height * 0.03),
               _buildBanner(size, colors),
               SizedBox(height: size.height * 0.03),
-              _buildSectionHeader('Articles & Tips', size, colors),
+              _buildSectionHeader('Articles & Tips', size, colors,  showSeeAll: false),
               SizedBox(height: size.height * 0.02),
               _buildArticlesGrid(size, colors),
               SizedBox(height: size.height * 0.02),
@@ -85,24 +87,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontFamily: 'Poppins',
                 fontSize: size.width * 0.06,
                 fontWeight: FontWeight.w600,
-                color: colors.primary,
+                color: colors.statusCard,
               ),
             ),
           ),
-          _topBarIcon(Icons.search_outlined, colors, size),
+          _topBarIcon('assets/images/Search.png', colors, size),
           SizedBox(width: size.width * 0.04),
-          _topBarIcon(Icons.notifications_outlined, colors, size),
+          _topBarIcon('assets/images/Notifications.png', colors, size),
           SizedBox(width: size.width * 0.04),
-          _topBarIcon(Icons.person_outline, colors, size),
+          _topBarIcon('assets/images/profile.png', colors, size, onTap: () => Navigator.of(context).pushNamed('/profile')),
         ],
       ),
     );
   }
 
-  Widget _topBarIcon(IconData icon, AppColorScheme colors, Size size) {
+  Widget _topBarIcon(String imagePath, AppColorScheme colors, Size size, {VoidCallback? onTap}) {
     return GestureDetector(
-      onTap: () {},
-      child: Icon(icon, color: colors.primary, size: size.width * 0.06),
+      onTap: onTap,
+      child: ImageIcon(AssetImage(imagePath), color: colors.statusCard, size: size.width * 0.06),
     );
   }
 
@@ -116,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
         style: TextStyle(
           fontFamily: 'LeagueSpartan',
           fontSize: size.width * 0.04,
-          color: colors.textSecondary,
+          color: colors.textPrimary,
         ),
       ),
     );
@@ -164,13 +166,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 : Icon(icon, size: size.width * 0.08, color: isSelected ? colors.secondary : colors.primary),
             SizedBox(height: size.height * 0.008),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'LeagueSpartan',
-                fontSize: size.width * 0.03,
-                color: isSelected ? colors.secondary : colors.textPrimary,
-                fontWeight: FontWeight.w500,
+            Center(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'LeagueSpartan',
+                  fontSize: size.width * 0.03,
+                  color: isSelected ? colors.secondary : colors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],
@@ -189,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ─── Section Header ────────────────────────────────────────────────────────
 
-  Widget _buildSectionHeader(String title, Size size, AppColorScheme colors) {
+  Widget _buildSectionHeader(String title, Size size, AppColorScheme colors, {bool showSeeAll = true}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
       child: Row(
@@ -204,23 +209,24 @@ class _HomeScreenState extends State<HomeScreen> {
               color: colors.secondary,
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'See all',
-                  style: TextStyle(
-                    fontFamily: 'LeagueSpartan',
-                    fontSize: size.width * 0.035,
-                    color: colors.onPrimary,
+          if (showSeeAll)
+            GestureDetector(
+              onTap: () {},
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'See all',
+                    style: TextStyle(
+                      fontFamily: 'LeagueSpartan',
+                      fontSize: size.width * 0.035,
+                      color: colors.onPrimary,
+                    ),
                   ),
-                ),
-                Image.asset('assets/images/right_arrow.png', width: size.width * 0.03, height: size.width * 0.03, color: colors.secondary),
-              ]
+                  Image.asset('assets/images/right_arrow.png', width: size.width * 0.03, height: size.width * 0.03, color: colors.secondary),
+                ]
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -230,8 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildRecommendationGrid(Size size, AppColorScheme colors) {
     final items = <Map<String, String>>[
-      {'title': 'squat Exercise', 'subtitle': 'Intermediate', 'image': 'assets/images/squats-group.png'},
-      {'title': 'Full Body stretching', 'subtitle': 'Beginner', 'image': 'assets/images/stretch.png'},
+      {'title': 'Squat Exercise', 'time': '20 min', 'calories': '180 kcal', 'image': 'assets/images/squats-group.png'},
+      {'title': 'Full Body stretching', 'time': '15 min', 'calories': '120 kcal', 'image': 'assets/images/stretch.png'},
     ];
 
     return Padding(
@@ -240,54 +246,135 @@ class _HomeScreenState extends State<HomeScreen> {
         children: items.asMap().entries.map((entry) {
           return Expanded(
             child: Container(
-              margin: entry.key == 0 ? EdgeInsets.only(right: size.width * 0.025) : EdgeInsets.only(left: size.width * 0.025),
+              margin: entry.key == 0 ? EdgeInsets.only(right: size.width * 0.015) : EdgeInsets.only(left: size.width * 0.015),
               decoration: BoxDecoration(
                 color: colors.cardBackground,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                    child: Image.asset(
-                      entry.value['image']!,
-                      height: size.height * 0.12,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        height: size.height * 0.12,
-                        color: colors.primary.withValues(alpha: 0.3),
-                        child: Icon(Icons.fitness_center, size: size.width * 0.12, color: colors.primary),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.1,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                          child: Image.asset(
+                            entry.value['image']!,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              height: size.height * 0.12,
+                              color: colors.primary.withValues(alpha: 0.3),
+                              child: Icon(Icons.fitness_center, size: size.width * 0.12, color: colors.primary),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: colors.onSurface, width: 1.5),
+                            right: BorderSide(color: colors.onSurface, width: 1.5),
+                            bottom: BorderSide(color: colors.onSurface, width: 1.5),
+                          ),
+                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(size.width * 0.03),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                Text(
+                                  entry.value['title']!,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: size.width * 0.035,
+                                    fontWeight: FontWeight.w400,
+                                    color: colors.secondary,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: size.height * 0.004),
+                                Row(
+                                  children: [
+                                    ImageIcon(AssetImage('assets/images/Time.png'), size: size.width * 0.025, color: colors.primary),
+                                    SizedBox(width: size.width * 0.01),
+                                    Text(
+                                      entry.value['time']!,
+                                      style: TextStyle(
+                                        fontFamily: 'LeagueSpartan',
+                                        fontSize: size.width * 0.025,
+                                        color: colors.textSecondary,
+                                      ),
+                                    ),
+                                    SizedBox(width: size.width * 0.1),
+                                    ImageIcon(AssetImage('assets/images/Calories.png'), size: size.width * 0.025, color: colors.primary),
+                                    SizedBox(width: size.width * 0.01),
+                                    Text(
+                                      entry.value['calories']!,
+                                      style: TextStyle(
+                                        fontFamily: 'LeagueSpartan',
+                                        fontSize: size.width * 0.025,
+                                        color: colors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (_favouriteItems.contains(entry.key)) {
+                            _favouriteItems.remove(entry.key);
+                          } else {
+                            _favouriteItems.add(entry.key);
+                          }
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // color: Colors.black26,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: EdgeInsets.all(4),
+                        child: Image.asset(
+                          'assets/images/favourites.png',
+                          color: _favouriteItems.contains(entry.key) ? colors.secondary : colors.onSurface,
+                          width: size.width * 0.04,
+                        ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(size.width * 0.03),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          Text(
-                            entry.value['title']!,
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: size.width * 0.035,
-                              fontWeight: FontWeight.w600,
-                              color: colors.textPrimary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                  Positioned(
+                    top: size.height * 0.1 - size.width * 0.04,
+                    right: size.width * 0.02,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: colors.statusCard,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
                           ),
-                          SizedBox(height: size.height * 0.004),
-                          Text(
-                            entry.value['subtitle']!,
-                            style: TextStyle(
-                              fontFamily: 'LeagueSpartan',
-                              fontSize: size.width * 0.03,
-                              color: colors.textSecondary,
-                            ),
-                          ),
-                      ],
+                        ],
+                      ),
+                      padding: EdgeInsets.all(2),
+                      child: Icon(Icons.play_arrow, color: colors.onSurface, size: size.width * 0.05),
                     ),
                   ),
                 ],
@@ -304,12 +391,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBanner(Size size, AppColorScheme colors) {
     return Container(
       width: double.infinity,
-      height: size.height * 0.17,
+      height: size.height * 0.20,
       decoration: BoxDecoration(
         color: colors.primary,
       ),
       child: Container(
-        margin: EdgeInsets.all(size.width * 0.04),
+        margin: EdgeInsets.only(
+          left: size.width * 0.04,
+          right: size.width * 0.04,
+          top: size.height * 0.035,
+          bottom: size.height * 0.035,
+        ),
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(16),
@@ -354,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
-                  color: colors.secondary,
+                  // color: colors.secondary,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
@@ -375,8 +467,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildArticlesGrid(Size size, AppColorScheme colors) {
     final articles = <Map<String, String>>[
-      {'title': 'Workout Tips', 'author': 'John Doe', 'image': 'assets/images/supplements.png'},
-      {'title': 'Healthy Recipes', 'author': 'Jane Smith', 'image': 'assets/images/squats-group.png'},
+      {'title': 'Supplement Guide...', 'author': 'John Doe', 'image': 'assets/images/supplements.png'},
+      {'title': '15 Quick & Effective Daily Routines...', 'author': 'Jane Smith', 'image': 'assets/images/squats-group.png'},
     ];
 
     return Padding(
@@ -384,25 +476,60 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: articles.asMap().entries.map((entry) {
               return Expanded(
                 child: Container(
-                  margin: entry.key == 0 ? EdgeInsets.only(right: size.width * 0.025) : EdgeInsets.only(left: size.width * 0.025),
+              margin: entry.key == 0 ? EdgeInsets.only(right: size.width * 0.01) : EdgeInsets.only(left: size.width * 0.01),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          entry.value['image']!,
-                          height: size.height * 0.1,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
+                      Stack(
+                        children: [
+                          SizedBox(
                             height: size.height * 0.1,
-                            color: colors.primary.withValues(alpha: 0.2),
-                            child: Icon(Icons.image, size: size.width * 0.1, color: colors.primary),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                entry.value['image']!,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => Container(
+                                  height: size.height * 0.1,
+                                  color: colors.primary.withValues(alpha: 0.2),
+                                  child: Icon(Icons.image, size: size.width * 0.1, color: colors.primary),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (_favouriteArticles.contains(entry.key)) {
+                                    _favouriteArticles.remove(entry.key);
+                                  } else {
+                                    _favouriteArticles.add(entry.key);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  // color: Colors.black26,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: EdgeInsets.all(4),
+                                child: Image.asset(
+                                  'assets/images/favourites.png',
+                                  color: _favouriteArticles.contains(entry.key) ? colors.secondary : colors.onSurface,
+                                  width: size.width * 0.04,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: size.height * 0.008),
                       Text(
@@ -410,19 +537,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: size.width * 0.035,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: colors.textPrimary,
                         ),
                         textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        entry.value['author']!,
-                        style: TextStyle(
-                          fontFamily: 'LeagueSpartan',
-                          fontSize: size.width * 0.028,
-                          color: colors.textSecondary,
-                        ),
-                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
