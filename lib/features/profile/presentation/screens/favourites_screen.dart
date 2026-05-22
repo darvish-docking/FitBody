@@ -16,13 +16,17 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   final List<String> _filters = ['All', 'Video', 'Article'];
 
   final List<Map<String, String>> _videos = [
-    {'title': 'Squat Exercise', 'duration': '20 min', 'calories': '180 kcal', 'exercises': '8', 'image': 'assets/images/squats-group.png'},
-    {'title': 'Full Body stretching', 'duration': '15 min', 'calories': '120 kcal', 'exercises': '6', 'image': 'assets/images/stretch.png'},
+    {'title': 'Upper Body', 'duration': '60 min', 'calories': '1320 kcal', 'exercises': '5', 'image': 'assets/images/squats-group.png'},
+    {'title': 'Pull Out', 'duration': '30 min', 'calories': '1210 kcal', 'exercises': '10', 'image': 'assets/images/stretch.png'},
+    {'title': 'Loop Band Exercises', 'duration': '45 min', 'calories': '785 kcal', 'exercises': '5', 'image': 'assets/images/squats-group.png'},
+    {'title': 'Dumbbell Set Up', 'duration': '12 min', 'calories': '1385 kcal', 'exercises': '3', 'image': 'assets/images/stretch.png'},
   ];
 
   final List<Map<String, String>> _articles = [
-    {'title': 'Workout Tips', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'image': 'assets/images/supplements.png'},
-    {'title': 'Healthy Recipes', 'description': 'Sed do eiusmod tempor incididunt ut labore et dolore.', 'image': 'assets/images/squats-group.png'},
+    {'title': 'Boost Energy and Vitality', 'description': 'Incorporating physical exercise into your daily routine can boost...', 'image': 'assets/images/supplements.png'},
+    {'title': 'Lower Body Blast', 'description': 'A lower body blast is a high-intensity workout focused on targeting...', 'image': 'assets/images/squats-group.png'},
+      {'title': 'Hydrate Properly', 'description': 'Stay hydrated before, during, and after your workouts to optimize...', 'image': 'assets/images/supplements.png'},
+
   ];
 
   @override
@@ -74,7 +78,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                     fontFamily: 'Poppins',
                     fontSize: size.width * 0.055,
                     fontWeight: FontWeight.w600,
-                    color: colors.textPrimary,
+                    color: colors.statusCard,
                   ),
                 ),
               ],
@@ -99,8 +103,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           Text(
             'Sort By',
             style: TextStyle(
-              fontFamily: 'LeagueSpartan',
-              fontSize: size.width * 0.04,
+              fontFamily: 'Poppins',
+              fontSize: size.width * 0.03,
               color: colors.secondary,
               fontWeight: FontWeight.w500,
             ),
@@ -120,7 +124,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                       style: TextStyle(
                         fontFamily: 'LeagueSpartan',
                         fontSize: size.width * 0.03,
-                        color: isSelected ? colors.cardBackground : colors.textPrimary,
+                        color: isSelected ? colors.cardBackground : colors.primary,
                       ),
                     ),
                   ),
@@ -128,7 +132,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                   showCheckmark: false,
                   onSelected: (selected) => setState(() => _selectedFilter = index),
                   selectedColor: colors.secondary,
-                  backgroundColor: colors.chipBackground,
+                  backgroundColor: colors.onPrimary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -152,27 +156,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
       children: [
-        _buildSectionLabel('Videos', size, colors),
         ..._videos.map((v) => _buildVideoCard(v, size, colors)),
-        SizedBox(height: size.height * 0.03),
-        _buildSectionLabel('Articles', size, colors),
         ..._articles.map((a) => _buildArticleCard(a, size, colors)),
       ],
-    );
-  }
-
-  Widget _buildSectionLabel(String label, Size size, AppColorScheme colors) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: size.height * 0.015),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontFamily: 'Poppins',
-          fontSize: size.width * 0.045,
-          fontWeight: FontWeight.w600,
-          color: colors.secondary,
-        ),
-      ),
     );
   }
 
@@ -207,26 +193,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          video['title']!,
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.w600,
-                            color: colors.surface,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/favourites.png',
-                        color: colors.secondary,
-                        width: size.width * 0.05,
-                      ),
-                    ],
+                  Text(
+                    video['title']!,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: size.width * 0.04,
+                      fontWeight: FontWeight.w600,
+                      color: colors.surface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: size.height * 0.015),
                   Wrap(
@@ -284,13 +259,47 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               ),
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              video['image']!,
-              width: size.width * 0.35,
-              height: size.height * 0.12,
-              fit: BoxFit.cover,
+          SizedBox(
+            width: size.width * 0.35,
+            height: size.height * 0.12,
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    video['image']!,
+                    width: size.width * 0.35,
+                    height: size.height * 0.12,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: colors.statusCard,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(2),
+                    child: Icon(Icons.play_arrow, color: colors.onSurface, size: size.width * 0.055),
+                  ),
+                ),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: Image.asset(
+                    'assets/images/favourites.png',
+                    color: colors.secondary,
+                    width: size.width * 0.045,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -303,10 +312,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     return Container(
       margin: EdgeInsets.only(bottom: size.height * 0.02),
       decoration: BoxDecoration(
-        color: colors.cardBackground,
+        color: colors.onPrimary,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Row(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Row(
         children: [
           Expanded(
             child: Padding(
@@ -314,26 +325,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          article['title']!,
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: size.width * 0.04,
-                            fontWeight: FontWeight.w600,
-                            color: colors.textPrimary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/favourites.png',
-                        color: colors.secondary,
-                        width: size.width * 0.05,
-                      ),
-                    ],
+                  Text(
+                    article['title']!,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: size.width * 0.04,
+                      fontWeight: FontWeight.w600,
+                      color: colors.surface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: size.height * 0.008),
                   Text(
@@ -341,7 +341,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                     style: TextStyle(
                       fontFamily: 'LeagueSpartan',
                       fontSize: size.width * 0.03,
-                      color: colors.textSecondary,
+                      color: colors.surface,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -350,16 +350,30 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               ),
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              article['image']!,
-              width: size.width * 0.35,
-              height: size.height * 0.1,
-              fit: BoxFit.cover,
-            ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  article['image']!,
+                  width: size.width * 0.35,
+                  height: size.height * 0.1,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: Image.asset(
+                  'assets/images/favourites.png',
+                  color: colors.secondary,
+                  width: size.width * 0.045,
+                ),
+              ),
+            ],
           ),
         ],
+      ),
       ),
     );
   }

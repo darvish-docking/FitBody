@@ -23,6 +23,9 @@ import 'package:fitbody/features/home/presentation/screens/home_screen.dart';
 import 'package:fitbody/features/profile/presentation/screens/profile_screen.dart';
 import 'package:fitbody/features/profile/presentation/screens/update_profile_screen.dart';
 import 'package:fitbody/features/profile/presentation/screens/favourites_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/settings_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/notification_settings_screen.dart';
+import 'package:fitbody/features/profile/presentation/screens/password_settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +77,9 @@ class FitBodyApp extends StatelessWidget {
             '/profile': (context) => const ProfileScreen(),
             '/update-profile': (context) => const UpdateProfileScreen(),
             '/favourites': (context) => const FavouritesScreen(),
+            '/settings': (context) => const SettingsScreen(),
+            '/notification-settings': (context) => const NotificationSettingsScreen(),
+            '/password-settings': (context) => const PasswordSettingsScreen(),
           },
         );
       },

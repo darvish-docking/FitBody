@@ -291,6 +291,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             case 'Favourites':
               Navigator.of(context).pushNamed('/favourites');
               break;
+            case 'Settings':
+              Navigator.of(context).pushNamed('/settings');
+              break;
             case 'Logout':
               _handleLogout();
               break;
